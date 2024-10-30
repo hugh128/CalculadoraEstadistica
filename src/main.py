@@ -4,9 +4,9 @@ class UI(ft.UserControl):
     def __init__(self, page):
         super().__init__(expand=True)
 
-        # Definir el gradiente de azul fuerte a azul oscuro
+      
         self.gradient_color = ft.LinearGradient(
-            colors=["#007BFF", "#0066A2", "#003366"],  # Azul fuerte a un azul más suave y luego a azul oscuro
+            colors=["#007BFF", "#0066A2", "#003366"], 
             begin=ft.Alignment(0, 0),        # Izquierda
             end=ft.Alignment(1, 0),          # Derecha
             stops=[0.0, 0.5, 1.0]  # Aumentar el número de stops para una transición más suave
@@ -29,7 +29,7 @@ class UI(ft.UserControl):
             expand=True,  # Hacer que el initial_container se expanda
             content=ft.Column(
                 controls=[
-                    ft.Text("Tema 1 y 2", color="black"),  # Cambiar color del texto a negro
+                    ft.Text("Tema 1 y 2", color="black"),
                     ft.Container(
                         border_radius=20,
                     )
@@ -44,7 +44,7 @@ class UI(ft.UserControl):
             expand=True,  # Hacer que el initial_container se expanda
             content=ft.Column(
                 controls=[
-                    ft.Text("Tema 3 y 4", color="black"),  # Cambiar color del texto a negro
+                    ft.Text("Tema 3 y 4", color="black"),
                     ft.Container(
                         border_radius=20,
                     )
@@ -59,7 +59,7 @@ class UI(ft.UserControl):
             expand=True,  # Hacer que el initial_container se expanda
             content=ft.Column(
                 controls=[
-                    ft.Text("Tema 5 y 6", color="black"),  # Cambiar color del texto a negro
+                    ft.Text("Tema 5 y 6", color="black"),
                     ft.Container(
                         border_radius=20,
                     )
@@ -74,7 +74,7 @@ class UI(ft.UserControl):
             expand=True,  # Hacer que el initial_container se expanda
             content=ft.Column(
                 controls=[
-                    ft.Text("Tema 7 y 8", color="black"),  # Cambiar color del texto a negro
+                    ft.Text("Tema 7 y 8", color="black"),
                     ft.Container(
                         border_radius=20,
                     )
@@ -89,7 +89,7 @@ class UI(ft.UserControl):
             expand=True,  # Hacer que el initial_container se expanda
             content=ft.Column(
                 controls=[
-                    ft.Text("Tema 9 y 10", color="black"),  # Cambiar color del texto a negro
+                    ft.Text("Tema 9 y 10", color="black"),
                     ft.Container(
                         border_radius=20,
                     )
@@ -112,15 +112,15 @@ class UI(ft.UserControl):
 
         self.navigation_container = ft.Container(
             col=1,
-            gradient=self.gradient_color,  # Usar el gradiente aquí
+            gradient=self.gradient_color,
             border_radius=10,
             content=ft.Column(
                 controls=[
                     ft.Container(
-                        expand=True,  # Asegúrate de que este contenedor expanda
-                        gradient=self.gradient_color,  # Aplicar el mismo gradiente aquí
+                        expand=True,
+                        gradient=self.gradient_color, 
                         content=ft.NavigationRail(
-                            bgcolor=ft.colors.TRANSPARENT,  # Hacerlo transparente para ver el gradiente
+                            bgcolor=ft.colors.TRANSPARENT,
                             expand=True,
                             on_change=self.change_page,
                             selected_index= 0,
@@ -164,7 +164,7 @@ class UI(ft.UserControl):
         self.frame_2 = ft.Container(
             col=11,
             expand=True,  # Hacer que el frame_2 se expanda
-            content=self.container_1  # Initially show the first container
+            content=self.container_1
         )
 
 
