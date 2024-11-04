@@ -110,7 +110,7 @@ class Tema7_8:
                     content= ft.Column([
                         ft.Text("Si un experimento puede dar como resultado cualquiera de  N diferentes resultados que  tienen  las  mismas  probabilidades  de  ocurrir,  y  si  exactamente  n de  estos resultados corresponden al evento A, entonces la probabilidad del evento A es",width=800),
                         ft.Image(
-                        src="assets/Probabilidad.png",
+                        src="src/assets/Probabilidad.png",
                         width=100,
                         height=100,
                         fit=ft.ImageFit.CONTAIN,
@@ -159,7 +159,7 @@ class Tema7_8:
                         content= ft.Column([
                             ft.Text("Si A y B son dos eventos no excluyentes, entonces",width=400),
                             ft.Image(
-                            src="assets/aditiva.png",
+                            src="src/assets/aditiva.png",
                             width=300,
                             height=300,
                             fit=ft.ImageFit.CONTAIN
@@ -200,7 +200,7 @@ class Tema7_8:
                     content= ft.Column([
                         ft.Text("Definición 1: La probabilidad condicional de B, dado A, que se denota con P(B|A), siempre que P(A)>0, se define como"), 
                         ft.Image(
-                            src="assets/condicional.png",
+                            src="src/assets/condicional.png",
                             width=150,
                             height=100,
                             fit=ft.ImageFit.CONTAIN
