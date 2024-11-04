@@ -1,20 +1,24 @@
 import flet as ft
-import subprocess
+from Tema7_8 import Tema7_8
 
 class UI(ft.UserControl):
+
     def __init__(self, page):
         super().__init__(expand=True)
-
+        self.page = page
+        self.instanciaTab = Tema7_8()
+         
+        #--------------------------------------------------------------------------------------------------------------
         self.gradient_color = ft.LinearGradient(
             colors=["#007BFF", "#0066A2", "#003366"], 
-            begin=ft.Alignment(0, 0),
-            end=ft.Alignment(1, 0),
-            stops=[0.0, 0.5, 1.0]
+            begin=ft.Alignment(0, 0),        # Izquierda
+            end=ft.Alignment(1, 0),          # Derecha
+            stops=[0.0, 0.5, 1.0]  # Aumentar el número de stops para una transición más suave
         )
 
         self.mode_switch = ft.Switch(
             value=True,
-            on_change=self.switch_update,
+            on_change= self.switch_update,
             thumb_color="black",
             thumb_icon={
                 ft.MaterialState.DEFAULT: ft.icons.LIGHT_MODE,
@@ -22,12 +26,11 @@ class UI(ft.UserControl):
             }
         )
 
-        # Contenedor inicial
         self.initial_container = ft.Container(
             bgcolor="#F0F0F0",
             border_radius=20,
             padding=20,
-            expand=True,
+            expand=True,  # Hacer que el initial_container se expanda
             content=ft.Column(
                 controls=[
                     ft.Text("Tema 1 y 2", color="black"),
@@ -38,12 +41,11 @@ class UI(ft.UserControl):
             )
         )
 
-        # Otros contenedores
         self.tema3_container = ft.Container(
             bgcolor="#F0F0F0",
             border_radius=20,
             padding=20,
-            expand=True,
+            expand=True,  # Hacer que el initial_container se expanda
             content=ft.Column(
                 controls=[
                     ft.Text("Tema 3 y 4", color="black"),
@@ -54,16 +56,59 @@ class UI(ft.UserControl):
             )
         )
 
-        # Lista de contenedores
+        self.tema5_container = ft.Container(
+            bgcolor="#F0F0F0",
+            border_radius=20,
+            padding=20,
+            expand=True,  # Hacer que el initial_container se expanda
+            content=ft.Column(
+                controls=[
+                    ft.Text("Tema 5 y 6", color="black"),
+                    ft.Container(
+                        border_radius=20,
+                    )
+                ]
+            )
+        )
+        #---------------TEMA 7 Y 8----------------
+        tabs = ft.Tabs(
+            tabs=[
+            self.instanciaTab.tab_evento(),
+            self.instanciaTab.tab_aditiva(),
+            self.instanciaTab.tab_condicional(),
+            self.instanciaTab.tab_independientes(),
+            self.instanciaTab.tab_regla_multiplicativa(),
+        ])
+        self.container = ft.Column(
+            controls=[tabs],
+            scroll=ft.ScrollMode.ALWAYS,
+            expand= True
+        )
+
+        self.tema9_container = ft.Container(
+            bgcolor="#F0F0F0",
+            border_radius=20,
+            padding=20,
+            expand=True,  # Hacer que el initial_container se expanda
+            content=ft.Column(
+                controls=[
+                    ft.Text("Tema 9 y 10", color="black"),
+                    ft.Container(
+                        border_radius=20,
+                    )
+                ]
+            )
+        )
+
         self.container_list = [
-            self.initial_container, 
-            self.tema3_container,
-            # Añadir los demás contenedores aquí
-        ]
+                            self.initial_container, 
+                            self.tema3_container, 
+                            self.tema5_container, 
+                            self.container,
+                            self.tema9_container ]
 
         self.container_1 = ft.Container(content=self.container_list[0], expand=True)
 
-        # NavigationRail con evento para el icono de casa
         self.navigation_container = ft.Container(
             col=1,
             gradient=self.gradient_color,
@@ -77,13 +122,23 @@ class UI(ft.UserControl):
                             bgcolor=ft.colors.TRANSPARENT,
                             expand=True,
                             on_change=self.change_page,
-                            selected_index=0,
+                            selected_index= 0,
                             destinations=[
-                                ft.NavigationDestination(icon=ft.icons.HOME),
-                                ft.NavigationDestination(icon=ft.icons.ADD),
-                                ft.NavigationDestination(icon=ft.icons.REMOVE),
-                                ft.NavigationDestination(icon=ft.icons.CLOSE),
-                                ft.NavigationDestination(icon=ft.icons.PERCENT),
+                                ft.NavigationDestination(
+                                    icon=ft.icons.HOME,
+                                ),
+                                ft.NavigationDestination(
+                                    icon=ft.icons.ADD,
+                                ),
+                                ft.NavigationDestination(
+                                    icon=ft.icons.REMOVE,
+                                ),
+                                ft.NavigationDestination(
+                                    icon=ft.icons.CLOSE,
+                                ),
+                                ft.NavigationDestination(
+                                    icon=ft.icons.PERCENT,
+                                ),
                             ]
                         )
                     ),
@@ -94,7 +149,9 @@ class UI(ft.UserControl):
                             expand=True,
                             alignment=ft.MainAxisAlignment.END,
                             controls=[
-                                ft.IconButton(icon=ft.icons.OUTPUT),
+                                ft.IconButton(
+                                    icon=ft.icons.OUTPUT,
+                                ),
                                 self.mode_switch
                             ]
                         )
@@ -105,9 +162,10 @@ class UI(ft.UserControl):
 
         self.frame_2 = ft.Container(
             col=11,
-            expand=True,
+            expand=True,  # Hacer que el frame_2 se expanda
             content=self.container_1
         )
+
 
         self.container = ft.ResponsiveRow(
             controls=[
@@ -118,21 +176,22 @@ class UI(ft.UserControl):
 
     def change_page(self, e):
         index = e.control.selected_index
-        if index == 0:
-            # Abre ventana.py cuando se selecciona el icono de la casa
-            subprocess.Popen(["python", "src/python_flet_tema 1 y 2/python_flet/ventana.py"])
-        else:
-            # Cambia de contenido en el frame para otros iconos
-            self.container_1.content = self.container_list[index]
-            self.frame_2.content = self.container_1
-            self.update()
+        self.container_1.content = self.container_list[index]
+        self.frame_2.content = self.container_1
+        self.update()
+        print(index)
 
     def switch_update(self, e):
-        self.page.theme_mode = "dark" if e.control.value else "light"
+        if e.control.value :
+            self.page.theme_mode = "dark"
+        else:
+            self.page.theme_mode = "light"
         self.page.update()
+        
 
     def build(self):
         return self.container
+
 
 def main(page: ft.Page):
     page.window_min_height = 820
