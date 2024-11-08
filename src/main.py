@@ -5,6 +5,7 @@ import base64
 from collections import Counter
 from Tema1_2 import tema1, tema2, tema3, tema4, tema5  # Importamos las funciones de Tema1_2
 from Tema7_8 import Tema7_8
+from Tema10_11 import calcular_binomial, calcular_geometrica, calcular_hipergeometrica, calcular_multinomial, calcular_poisson, crear_barra_separacion, crear_pestana_binomial, crear_pestana_geometrica, crear_pestana_hipergeometrica, crear_pestana_multinomial, crear_pestana_poisson
 
 class UI(ft.UserControl):  # Considera cambiar UserControl en futuras actualizaciones
 
@@ -12,7 +13,7 @@ class UI(ft.UserControl):  # Considera cambiar UserControl en futuras actualizac
         super().__init__(expand=True)
         self.page = page
         self.instanciaTab = Tema7_8()
-         
+        
         # Gradiente de color para el diseño
         self.gradient_color = ft.LinearGradient(
             colors=["#007BFF", "#0066A2", "#003366"], 
@@ -26,13 +27,25 @@ class UI(ft.UserControl):  # Considera cambiar UserControl en futuras actualizac
             value=True,
             on_change=self.switch_update,
             thumb_color="black",
-            thumb_icon={
+            thumb_icon={  
                 ft.ControlState.DEFAULT: ft.icons.LIGHT_MODE,
                 ft.ControlState.SELECTED: ft.icons.DARK_MODE
             }
         )
-
-        # Creación de las pestañas para `Tema1_2` dentro de `initial_container`
+        
+        # Crear las pestañas para tema 10 y 11 usando las funciones importadas
+        self.tema10_11_tabs = ft.Tabs(
+            tabs=[
+                ft.Tab(text="Tema 1: Binomial", content=crear_pestana_binomial(self.page)),
+                ft.Tab(text="Tema 2: Multinomial", content=crear_pestana_multinomial(self.page)),
+                ft.Tab(text="Tema 3: Hipergeométrica", content=crear_pestana_hipergeometrica(self.page)),
+                ft.Tab(text="Tema 4: Geométrica", content=crear_pestana_geometrica(self.page)),
+                ft.Tab(text="Tema 5: Poisson", content=crear_pestana_poisson(self.page)),
+            ], 
+            selected_index=0
+        )        
+        
+        # Crear las pestañas para Tema1_2
         tema1_2_tabs = ft.Tabs(
             tabs=[
                 ft.Tab(text="Tema 1: Tabla de Frecuencias", content=tema1(self.page)),
@@ -54,8 +67,10 @@ class UI(ft.UserControl):  # Considera cambiar UserControl en futuras actualizac
                 controls=[
                     ft.Text("Tema 1 y 2", color="black"),
                     tema1_2_tabs,
-                ]
-            )
+                ],
+                scroll="always",  # Activa el desplazamiento en el Column
+                expand=True,      # Expande el Column para ocupar el espacio disponible
+            ),
         )
 
         # Contenedores adicionales (sin cambios)
@@ -102,6 +117,7 @@ class UI(ft.UserControl):  # Considera cambiar UserControl en futuras actualizac
             expand=True
         )
 
+        # Contenedor para Tema 10 y 11
         self.tema9_container = ft.Container(
             bgcolor="#F0F0F0",
             border_radius=20,
@@ -109,7 +125,8 @@ class UI(ft.UserControl):  # Considera cambiar UserControl en futuras actualizac
             expand=True,
             content=ft.Column(
                 controls=[
-                    ft.Text("Tema 9 y 10", color="black"),
+                    ft.Text("Tema 10 y 11", color="black"),
+                    self.tema10_11_tabs,
                     ft.Container(border_radius=20)
                 ]
             )
