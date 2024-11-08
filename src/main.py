@@ -6,6 +6,7 @@ from collections import Counter
 from Tema1_2 import tema1, tema2, tema3, tema4, tema5  # Importamos las funciones de Tema1_2
 from Tema7_8 import Tema7_8
 from Tema10_11 import calcular_binomial, calcular_geometrica, calcular_hipergeometrica, calcular_multinomial, calcular_poisson, crear_barra_separacion, crear_pestana_binomial, crear_pestana_geometrica, crear_pestana_hipergeometrica, crear_pestana_multinomial, crear_pestana_poisson
+from tema3_4 import CalculadoraEstadistica
 
 
 class UI(ft.UserControl):  # Considera cambiar UserControl en futuras actualizaciones
@@ -14,6 +15,8 @@ class UI(ft.UserControl):  # Considera cambiar UserControl en futuras actualizac
         super().__init__(expand=True)
         self.page = page
         self.instanciaTab = Tema7_8()
+        self.calculadora = CalculadoraEstadistica(page)
+        self.calculadora.set_page(page)
         
         # Gradiente de color para el diseño
         self.gradient_color = ft.LinearGradient(
@@ -74,17 +77,17 @@ class UI(ft.UserControl):  # Considera cambiar UserControl en futuras actualizac
             ),
         )
 
-        # Contenedores adicionales (sin cambios)
+        # Contenedor tema 3 y 4
         self.tema3_container = ft.Container(
-            bgcolor="#F0F0F0",
             border_radius=20,
             padding=20,
             expand=True,
             content=ft.Column(
                 controls=[
                     ft.Text("Tema 3 y 4", color="black"),
-                    ft.Container(border_radius=20)
-                ]
+                    self.calculadora.build()
+                ],
+                expand=True
             )
         )
 
@@ -210,6 +213,40 @@ class UI(ft.UserControl):  # Considera cambiar UserControl en futuras actualizac
 
     def build(self):
         return self.container
+    
+    # Metodos para contenedor del tema 3 y 4
+    def did_mount(self):
+        self.calculadora.page = self.page
+        self.update_event_handlers()
+
+    def update_event_handlers(self):
+        self.calculadora.calculate_button.on_click = lambda e: self.handle_calculate(e)
+        self.calculadora.calculate_position_button.on_click = lambda e: self.handle_calculate_position(e)
+        self.calculadora.calcular_coeficiente_button.on_click = lambda e: self.handle_calculate_coefficient(e)
+        self.calculadora.data_type_switch.on_change = lambda e: self.handle_switch_change(e)
+        validar_entrada = self.calculadora.create_validate_input_function()
+        self.calculadora.values_input.on_change = lambda e: validar_entrada(self.calculadora.values_input, e)
+        self.calculadora.frequencies_input.on_change = lambda e: validar_entrada(self.calculadora.frequencies_input, e)
+        self.calculadora.numbers_input.on_change = lambda e: validar_entrada(self.calculadora.numbers_input, e)
+        
+        self.update()
+
+    def handle_calculate(self, e):
+        self.calculadora.calcular_medidas()
+        self.update()
+
+    def handle_calculate_position(self, e):
+        self.calculadora.calcular_medidas_de_posición(e)
+        self.update()
+
+    def handle_calculate_coefficient(self, e):
+        self.calculadora.calcular_coeficiente(e)
+        self.update()
+
+    def handle_switch_change(self, e):
+        self.calculadora.update_input_hint(e)
+        self.update()
+
 
 
 def main(page: ft.Page):
