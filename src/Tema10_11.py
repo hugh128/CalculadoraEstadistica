@@ -191,4 +191,3 @@ def calcular_poisson(lambda_input, k_input_poisson, resultado_poisson, page):
     except ValueError:
         resultado_poisson.value = "Error: Verifica los valores ingresados."
     page.update()
-

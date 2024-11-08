@@ -7,6 +7,7 @@ from Tema1_2 import tema1, tema2, tema3, tema4, tema5  # Importamos las funcione
 from Tema7_8 import Tema7_8
 from Tema10_11 import calcular_binomial, calcular_geometrica, calcular_hipergeometrica, calcular_multinomial, calcular_poisson, crear_barra_separacion, crear_pestana_binomial, crear_pestana_geometrica, crear_pestana_hipergeometrica, crear_pestana_multinomial, crear_pestana_poisson
 
+
 class UI(ft.UserControl):  # Considera cambiar UserControl en futuras actualizaciones
 
     def __init__(self, page):
