@@ -1,4 +1,4 @@
-
+import flet as ft
 import matplotlib.pyplot as plt
 import io
 import base64
@@ -45,7 +45,6 @@ def tema1(page):
             number_list.extend(numbers)
             number_input.value = ""
             result_area.value = "Números ingresados: " + ", ".join(map(str, number_list))
-            page.update()
         except ValueError:
             result_area.value = "Por favor ingresa números válidos separados por comas."
         page.update()
@@ -358,3 +357,7 @@ def tema5(page):
     )
 
     return content
+
+    
+  
+
