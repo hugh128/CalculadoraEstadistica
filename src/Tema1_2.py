@@ -3,6 +3,7 @@ import matplotlib.pyplot as plt
 import io
 import base64
 from collections import Counter
+from io import BytesIO
 
 # Tema 1: Tabla de Frecuencias
 def tema1(page):
@@ -39,7 +40,8 @@ def tema1(page):
 
     def add_number(e):
         try:
-            numbers = [int(num.strip()) for num in number_input.value.split(",") if num.strip()]
+            # Convertir los valores ingresados a flotantes
+            numbers = [float(num.strip()) for num in number_input.value.split(",") if num.strip()]
             number_list.extend(numbers)
             number_input.value = ""
             result_area.value = "Números ingresados: " + ", ".join(map(str, number_list))
@@ -49,6 +51,7 @@ def tema1(page):
 
     def sort_numbers(e):
         if number_list:
+            # Ordenar la lista de números
             number_list.sort()
             result_area.value = "Números ordenados: " + ", ".join(map(str, number_list))
         else:
@@ -62,13 +65,13 @@ def tema1(page):
             total_numbers = len(number_list)
             cumulative_frequency = 0.0
 
-            for number, freq in number_counter.items():
+            for number, freq in sorted(number_counter.items()):
                 relative_frequency = freq / total_numbers
                 cumulative_frequency += relative_frequency
                 table.rows.append(
                     ft.DataRow(
                         cells=[
-                            ft.DataCell(ft.Text(str(number))),
+                            ft.DataCell(ft.Text(f"{number:.2f}")),
                             ft.DataCell(ft.Text(str(freq))),
                             ft.DataCell(ft.Text(f"{relative_frequency:.4f}")),
                             ft.DataCell(ft.Text(f"{cumulative_frequency:.4f}")),
@@ -114,8 +117,12 @@ def tema1(page):
     
     return content
 
-# Tema 2: Gráfica de Barras
+
+
+
+#grafica barras
 def tema2(page):
+    # Campos de entrada para los datos
     datos_x = ft.TextField(label="Datos X (separados por comas)", width=300)
     datos_y = ft.TextField(label="Datos Y (separados por comas)", width=300)
     resultado_texto = ft.Text()
@@ -133,20 +140,25 @@ def tema2(page):
             ax.set_xlabel("Eje X")
             ax.set_ylabel("Eje Y")
             ax.set_title("Gráfica de Barras")
+            
+            # Guardar la gráfica en un buffer en formato base64
             buffer = io.BytesIO()
             plt.savefig(buffer, format="png")
             buffer.seek(0)
             img_base64 = base64.b64encode(buffer.getvalue()).decode("utf-8")
             grafica_imagen.src_base64 = img_base64
+            
             resultado_texto.value = ""
             page.update()
         except ValueError:
             resultado_texto.value = "Error: Asegúrate de ingresar solo números para el eje Y."
             page.update()
 
+    # Botón para generar la gráfica
     bntGenerar = ft.ElevatedButton("Generar Gráfica", on_click=generar_grafica)
     
-    content = ft.Column(
+    # Contenedor de desplazamiento para los datos y la gráfica
+    scrollable_content = ft.Column(
         [
             datos_x,
             datos_y,
@@ -155,7 +167,17 @@ def tema2(page):
             grafica_imagen,
         ],
         spacing=10,
+        scroll="always",  # Activar desplazamiento
+        width=550,  # Ajustar ancho si es necesario
+        height=450,  # Ajustar alto para el área de visualización deseada
     )
+    
+    # Contenedor principal
+    content = ft.Container(
+        content=scrollable_content,
+        padding=10,
+    )
+    
     return content
 
 # Tema 3: Gráfica de Pastel
@@ -243,56 +265,99 @@ def tema4(page):
 
 # Tema 5: Histogramas y Polígonos de Frecuencia
 def tema5(page):
-    input_data = ft.TextField(label="Datos (separados por comas)", width=300)
-    resultado_texto = ft.Text()
-    grafica_imagen = ft.Image(src="", width=500, height=400)
+    datos_input = ft.TextField(label="Datos (separados por comas)", width=300)
+    intervalos_input = ft.TextField(label="Número de Intervalos", width=300)
+    tabla_resultado = ft.Column()
+    grafico_histograma = ft.Container()
+    grafico_polinomio = ft.Container()
 
     def generar_grafica(e):
         try:
-            data = list(map(float, input_data.value.split(",")))
-            fig, ax = plt.subplots()
-            ax.hist(data, bins=10, edgecolor="black", alpha=0.7)
-            ax.set_xlabel("Valor")
-            ax.set_ylabel("Frecuencia")
-            ax.set_title("Histograma")
-            ax.grid(True)
-            buffer = io.BytesIO()
-            plt.savefig(buffer, format="png")
-            buffer.seek(0)
-            img_base64 = base64.b64encode(buffer.getvalue()).decode("utf-8")
-            grafica_imagen.src_base64 = img_base64
-            resultado_texto.value = ""
-            page.update()
-        except ValueError:
-            resultado_texto.value = "Error: Ingresa solo números para generar el histograma."
+            # Leer datos ingresados
+            datos = [float(d) for d in datos_input.value.split(",")]
+            num_intervalos = int(intervalos_input.value)
+            
+            # Calcular intervalos y frecuencias
+            min_dato, max_dato = min(datos), max(datos)
+            rango = (max_dato - min_dato) / num_intervalos
+            intervalos = [(min_dato + i * rango, min_dato + (i + 1) * rango) for i in range(num_intervalos)]
+            
+            # Inicializar variables para frecuencias y límites
+            frecuencias = []
+            marca_clase = []
+            
+            for limite_inf, limite_sup in intervalos:
+                frecuencia = sum(1 for d in datos if limite_inf <= d < limite_sup)
+                frecuencias.append(frecuencia)
+                marca_clase.append((limite_inf + limite_sup) / 2)
+            
+            # Crear tabla de frecuencias
+            tabla_resultado.controls.clear()
+            tabla_resultado.controls.append(ft.Text("Tabla de Frecuencias", weight="bold", size=18))
+            tabla_resultado.controls.append(ft.Text("Límite Inferior | Límite Superior | Marca de Clase | Frecuencia"))
+            
+            for i in range(num_intervalos):
+                tabla_resultado.controls.append(ft.Text(f"{intervalos[i][0]:.2f} - {intervalos[i][1]:.2f} | {marca_clase[i]:.2f} | {frecuencias[i]}"))
+            
+            # Graficar el histograma y el polígono de frecuencias
+            graficar_histograma(marca_clase, frecuencias, rango)
+            graficar_poligono(marca_clase, frecuencias)
+
             page.update()
 
-    bntGenerar = ft.ElevatedButton("Generar Histograma", on_click=generar_grafica)
+        except ValueError:
+            tabla_resultado.controls.clear()
+            tabla_resultado.controls.append(ft.Text("Error: Asegúrate de ingresar datos válidos.", color="red"))
+            page.update()
+
+    # Función para graficar el histograma
+    def graficar_histograma(marcas, frecuencias, ancho_intervalo):
+        fig, ax = plt.subplots()
+        ax.bar(marcas, frecuencias, width=ancho_intervalo * 0.9, color="skyblue", edgecolor="black")
+        ax.set_xlabel("Marca de Clase")
+        ax.set_ylabel("Frecuencia")
+        ax.set_title("Histograma de Frecuencias")
+        ax.grid(True, linestyle="--", alpha=0.7)
+
+        # Convertir la figura a imagen y mostrarla
+        buffer = BytesIO()
+        plt.savefig(buffer, format="png")
+        buffer.seek(0)
+        img_base64 = base64.b64encode(buffer.getvalue()).decode("utf-8")
+        grafico_histograma.content = ft.Image(src_base64=img_base64)
+
+    # Función para graficar el polígono de frecuencias
+    def graficar_poligono(marcas, frecuencias):
+        fig, ax = plt.subplots()
+        ax.plot(marcas, frecuencias, marker="o", color="royalblue", linestyle="-", linewidth=2, markersize=6)
+        ax.set_xlabel("Marca de Clase")
+        ax.set_ylabel("Frecuencia")
+        ax.set_title("Polígono de Frecuencias")
+        ax.grid(True, linestyle="--", alpha=0.7)
+
+        # Convertir la figura a imagen y mostrarla
+        buffer = BytesIO()
+        plt.savefig(buffer, format="png")
+        buffer.seek(0)
+        img_base64 = base64.b64encode(buffer.getvalue()).decode("utf-8")
+        grafico_polinomio.content = ft.Image(src_base64=img_base64)
+
+    bntGenerar = ft.ElevatedButton("Generar Histograma y Polígono", on_click=generar_grafica)
     
     content = ft.Column(
         [
-            input_data,
+            datos_input,
+            intervalos_input,
             bntGenerar,
-            resultado_texto,
-            grafica_imagen,
+            tabla_resultado,
+            grafico_histograma,
+            grafico_polinomio,
         ],
         spacing=10,
     )
+
     return content
 
-# Configuración de la página principal
-def main(page):
-    tabs = ft.Tabs(
-        selected_index=0,
-        tabs=[
-            ft.Tab(text="Tema 1: Tabla de Frecuencias", content=tema1(page)),
-            ft.Tab(text="Tema 2: Gráfica de Barras", content=tema2(page)),
-            ft.Tab(text="Tema 3: Gráfica de Pastel", content=tema3(page)),
-            ft.Tab(text="Tema 4: Serie de Tiempo", content=tema4(page)),
-            ft.Tab(text="Tema 5: Histograma", content=tema5(page)),
-        ],
-    )
-
-    page.add(tabs)
-
+    
+  
 
