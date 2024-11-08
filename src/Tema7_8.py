@@ -34,8 +34,10 @@ class Tema7_8:
             total_eventos = float(self.input_total_eventos.value)
             probabilidad = eventos_exitosos / total_eventos
             self.resultado_probabilidad.value = f"P(E) = {probabilidad:.2f} (o {probabilidad * 100:.2f}%)"
+            self.resultado_probabilidad.update()
         except (ValueError, ZeroDivisionError):
             self.resultado_probabilidad.value = "Error: ingresa valores válidos."
+            self.resultado_probabilidad.update()
 
 
     # Función para calcular la probabilidad aditiva
@@ -46,8 +48,10 @@ class Tema7_8:
             prob_interseccion = float(self.input_prob_interseccion.value)
             prob_union = prob_a + prob_b - prob_interseccion
             self.resultado_aditiva.value = f"P(A ∪ B) = {prob_union:.2f} (o {prob_union * 100:.2f}%)"
+            self.resultado_aditiva.update()
         except (ValueError, ZeroDivisionError):
             self.resultado_aditiva.value = "Error: ingresa valores válidos."
+            self.resultado_aditiva.update()
 
 
     # Función para calcular la probabilidad condicional
@@ -58,12 +62,15 @@ class Tema7_8:
 
             if p_b == 0:
                 self.resultado_condicional.value = "P(B) no puede ser 0."
+                self.resultado_condicional.update()
             else:
                 # Calcular la probabilidad condicional
                 p_a_given_b = p_ab / p_b
                 self.resultado_condicional.value = f"Probabilidad condicional P(A|B): {p_a_given_b:.4f}"
+                self.resultado_condicional.update()
         except ValueError:
             self.resultado_condicional.value = "Por favor, ingresa valores válidos."
+            self.resultado_condicional.update()
 
 
     def calcularEventosIndependientes(self,event):
@@ -74,8 +81,10 @@ class Tema7_8:
             # Calcular la probabilidad de que ambos eventos ocurran
             prob_ambos = p1 * p2
             self.resultadoEventosIndependientes.value = f"Probabilidad de que ambos eventos ocurran: {prob_ambos:.4f}"
+            self.resultadoEventosIndependientes.update()
         except ValueError:
             self.resultadoEventosIndependientes.value = "Por favor, ingresa valores válidos."
+            self.resultadoEventosIndependientes.update()
 
 
     def calcularReglaMultiplicativa(self,event):
@@ -86,8 +95,10 @@ class Tema7_8:
             # Calcular la probabilidad de que ambos eventos ocurran
             prob_ambos = p_a * p_b
             self.resultado.value = f"Probabilidad de que ambos eventos ocurran (P(A ∩ B)): {prob_ambos:.4f}"
+            self.resultado.udpate()
         except ValueError:
             self.resultado.value = "Por favor, ingresa valores válidos."
+            self.resultado.update()
 
     def barra(self):
             return ft.Container(
