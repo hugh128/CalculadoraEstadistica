@@ -95,7 +95,7 @@ class Tema7_8:
             # Calcular la probabilidad de que ambos eventos ocurran
             prob_ambos = p_a * p_b
             self.resultado.value = f"Probabilidad de que ambos eventos ocurran (P(A ∩ B)): {prob_ambos:.4f}"
-            self.resultado.udpate()
+            self.resultado.update()
         except ValueError:
             self.resultado.value = "Por favor, ingresa valores válidos."
             self.resultado.update()
