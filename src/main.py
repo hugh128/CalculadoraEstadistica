@@ -4,6 +4,7 @@ import io
 import base64
 from collections import Counter
 from Tema1_2 import tema1, tema2, tema3, tema4, tema5  # Importamos las funciones de Tema1_2
+from Tema5_6 import Tema5_6
 from Tema7_8 import Tema7_8
 from Tema10_11 import calcular_binomial, calcular_geometrica, calcular_hipergeometrica, calcular_multinomial, calcular_poisson, crear_barra_separacion, crear_pestana_binomial, crear_pestana_geometrica, crear_pestana_hipergeometrica, crear_pestana_multinomial, crear_pestana_poisson
 from tema3_4 import CalculadoraEstadistica
@@ -14,6 +15,7 @@ class UI(ft.UserControl):  # Considera cambiar UserControl en futuras actualizac
     def __init__(self, page):
         super().__init__(expand=True)
         self.page = page
+        self.tema5_6 = Tema5_6()
         self.instanciaTab = Tema7_8()
         self.calculadora = CalculadoraEstadistica(page)
         self.calculadora.set_page(page)
@@ -61,6 +63,16 @@ class UI(ft.UserControl):  # Considera cambiar UserControl en futuras actualizac
             selected_index=0
         )
 
+        tema5_6_tabs = ft.Tabs(
+            tabs=[
+                self.tema5_6.tab_espacio_muestral(),
+                self.tema5_6.tab_permutacion_normal(),
+                self.tema5_6.tab_permutacion_repeticion(),
+                self.tema5_6.tab_combinacion_normal(),
+                self.tema5_6.tab_combinacion_repeticion(),
+            ]
+        )
+
         # Contenedor inicial con pestañas de Tema1_2
         self.initial_container = ft.Container(
             bgcolor="#F0F0F0",
@@ -99,7 +111,7 @@ class UI(ft.UserControl):  # Considera cambiar UserControl en futuras actualizac
             content=ft.Column(
                 controls=[
                     ft.Text("Tema 5 y 6", color="black"),
-                    ft.Container(border_radius=20)
+                    tema5_6_tabs,
                 ]
             )
         )
@@ -164,10 +176,10 @@ class UI(ft.UserControl):  # Considera cambiar UserControl en futuras actualizac
                             on_change=self.change_page,
                             selected_index=0,
                             destinations=[
-                                ft.NavigationBarDestination(icon=ft.icons.HOME),
-                                ft.NavigationBarDestination(icon=ft.icons.ADD),
-                                ft.NavigationBarDestination(icon=ft.icons.REMOVE),
-                                ft.NavigationBarDestination(icon=ft.icons.CLOSE),
+                                ft.NavigationBarDestination(icon=ft.icons.BAR_CHART),
+                                ft.NavigationBarDestination(icon=ft.icons.SHOW_CHART),
+                                ft.NavigationBarDestination(icon=ft.icons.CALCULATE),
+                                ft.NavigationBarDestination(icon=ft.icons.PIE_CHART),
                                 ft.NavigationBarDestination(icon=ft.icons.PERCENT),
                             ]
                         )
