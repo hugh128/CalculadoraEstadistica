@@ -3,14 +3,14 @@ import matplotlib.pyplot as plt
 import io
 import base64
 from collections import Counter
-from Tema1_2 import tema1, tema2, tema3, tema4, tema5  # Importamos las funciones de Tema1_2
+from Tema1_2 import tema1, tema2, tema3, tema4, tema5
 from Tema5_6 import Tema5_6
 from Tema7_8 import Tema7_8
 from Tema10_11 import calcular_binomial, calcular_geometrica, calcular_hipergeometrica, calcular_multinomial, calcular_poisson, crear_barra_separacion, crear_pestana_binomial, crear_pestana_geometrica, crear_pestana_hipergeometrica, crear_pestana_multinomial, crear_pestana_poisson
 from tema3_4 import CalculadoraEstadistica
 
 
-class UI(ft.UserControl):  # Considera cambiar UserControl en futuras actualizaciones
+class UI(ft.UserControl):
 
     def __init__(self, page):
         super().__init__(expand=True)
@@ -20,7 +20,6 @@ class UI(ft.UserControl):  # Considera cambiar UserControl en futuras actualizac
         self.calculadora = CalculadoraEstadistica(page)
         self.calculadora.set_page(page)
         
-        # Gradiente de color para el diseño
         self.gradient_color = ft.LinearGradient(
             colors=["#007BFF", "#0066A2", "#003366"], 
             begin=ft.Alignment(0, 0),
@@ -28,7 +27,6 @@ class UI(ft.UserControl):  # Considera cambiar UserControl en futuras actualizac
             stops=[0.0, 0.5, 1.0]
         )
 
-        # Modo oscuro/claro
         self.mode_switch = ft.Switch(
             value=True,
             on_change=self.switch_update,
@@ -39,7 +37,6 @@ class UI(ft.UserControl):  # Considera cambiar UserControl en futuras actualizac
             }
         )
         
-        # Crear las pestañas para tema 10 y 11 usando las funciones importadas
         self.tema10_11_tabs = ft.Tabs(
             tabs=[
                 ft.Tab(text="Tema 1: Binomial", content=crear_pestana_binomial(self.page)),
@@ -51,7 +48,6 @@ class UI(ft.UserControl):  # Considera cambiar UserControl en futuras actualizac
             selected_index=0
         )        
         
-        # Crear las pestañas para Tema1_2
         tema1_2_tabs = ft.Tabs(
             tabs=[
                 ft.Tab(text="Tema 1: Tabla de Frecuencias", content=tema1(self.page)),
@@ -73,7 +69,6 @@ class UI(ft.UserControl):  # Considera cambiar UserControl en futuras actualizac
             ]
         )
 
-        # Contenedor inicial con pestañas de Tema1_2
         self.initial_container = ft.Container(
             bgcolor="#F0F0F0",
             border_radius=20,
@@ -84,12 +79,11 @@ class UI(ft.UserControl):  # Considera cambiar UserControl en futuras actualizac
                     ft.Text("Tema 1 y 2", color="black"),
                     tema1_2_tabs,
                 ],
-                scroll="always",  # Activa el desplazamiento en el Column
-                expand=True,      # Expande el Column para ocupar el espacio disponible
+                scroll="always", 
+                expand=True,      
             ),
         )
 
-        # Contenedor tema 3 y 4
         self.tema3_container = ft.Container(
             border_radius=20,
             padding=20,
@@ -116,7 +110,6 @@ class UI(ft.UserControl):  # Considera cambiar UserControl en futuras actualizac
             )
         )
 
-        # Contenedor para Tema7_8
         tema7_8_tabs = ft.Tabs(
             tabs=[
                 self.instanciaTab.tab_evento(),
@@ -133,7 +126,6 @@ class UI(ft.UserControl):  # Considera cambiar UserControl en futuras actualizac
             expand=True
         )
 
-        # Contenedor para Tema 10 y 11
         self.tema9_container = ft.Container(
             bgcolor="#F0F0F0",
             border_radius=20,
@@ -148,7 +140,6 @@ class UI(ft.UserControl):  # Considera cambiar UserControl en futuras actualizac
             )
         )
 
-        # Lista de contenedores
         self.container_list = [
             self.initial_container, 
             self.tema3_container, 
@@ -157,10 +148,8 @@ class UI(ft.UserControl):  # Considera cambiar UserControl en futuras actualizac
             self.tema9_container 
         ]
 
-        # Contenedor dinámico para mostrar según el índice de `NavigationRail`
         self.container_1 = ft.Container(content=self.container_list[0], expand=True)
 
-        # Navegación
         self.navigation_container = ft.Container(
             col=1,
             gradient=self.gradient_color,
@@ -200,14 +189,12 @@ class UI(ft.UserControl):  # Considera cambiar UserControl en futuras actualizac
             )
         )
 
-        # Frame que contiene `container_1`
         self.frame_2 = ft.Container(
             col=11,
             expand=True,
             content=self.container_1
         )
 
-        # Estructura de la UI
         self.container = ft.ResponsiveRow(
             controls=[self.navigation_container, self.frame_2]
         )
@@ -226,7 +213,6 @@ class UI(ft.UserControl):  # Considera cambiar UserControl en futuras actualizac
     def build(self):
         return self.container
     
-    # Metodos para contenedor del tema 3 y 4
     def did_mount(self):
         self.calculadora.page = self.page
         self.update_event_handlers()

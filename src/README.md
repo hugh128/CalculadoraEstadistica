@@ -1,7 +1,5 @@
 # CalculadoraEstadistica
 
-# Calculadora Estadística y Probabilidad en Flet
-
 Este proyecto es una calculadora de estadística desarrollada en Python utilizando la biblioteca [Flet](https://flet.dev/). La aplicación proporciona una interfaz gráfica para realizar cálculos estadísticos, crear gráficos y trabajar con distribuciones de probabilidad. Los temas están estructurados para facilitar la navegación y el análisis de datos.
 
 ## Estructura del Proyecto
