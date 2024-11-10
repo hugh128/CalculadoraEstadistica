@@ -111,7 +111,7 @@ Cada distribución cuenta con campos específicos para ingresar los parámetros 
 
 ## Requisitos de Instalación
 
-Asegúrate de tener Python y las bibliotecas necesarias instaladas:
+Para que el código funcione correctamente hay que instalar las bibliotecas necesarias instaladas:
 
 ```bash
 pip install flet matplotlib
